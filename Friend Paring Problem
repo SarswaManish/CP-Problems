@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define int long long
+int dp[105];
+#define mod 1000000007
+
+void func()
+{
+    dp[0]=1;
+    dp[1]=1;
+    for(int i=2;i<=104;i++)
+    {
+        dp[i]=(dp[i-1]+((i-1)*dp[i-2])%mod)%mod;
+    }
+}
+int32_t main()
+{
+    int t;
+    cin>>t;
+    func();
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        cout<<dp[n]%mod<<endl;
+    }
+}
