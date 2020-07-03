@@ -1,0 +1,73 @@
+
+    #include <bits/stdc++.h>
+    #include <cstdio>
+    #include <cstring>
+    #include <cmath>
+    #include <cstring>
+    #include <chrono>
+    #include <complex>
+    #define endl "\n"
+    #define int long long int
+    #define vi vector<int>
+    #define vll vector<ll>
+    #define vvi vector < vi >
+    #define pii pair<int,int>
+    #define pll pair<long long, long long>
+    #define mod 1000000007
+    #define inf 1000000000000000001;
+    #define all(c) c.begin(),c.end()
+    #define mp(x,y) make_pair(x,y)
+    #define mem(a,val) memset(a,val,sizeof(a))
+    #define eb emplace_back
+    #define f first
+    #define s second
+
+    using namespace std;
+int power(int base, int exp)
+{
+    if (exp == 0)
+       return 1;
+    else if (exp == 1)
+       return base;
+    else
+    {
+       int calc;
+       if (exp % 2 == 0)
+       {
+         calc = power(base, exp/2);
+         calc =(calc* calc)%mod;
+       }
+       else
+       {
+         calc = (base*power(base, exp-1))%mod;
+       }
+       return calc%mod;
+    }
+}
+int profit(int a[],int b[],int n,int c)
+{
+    if(n==0 || c==0)
+        return 0;
+    int inc=0,exc=0;
+    if(c>=a[n-1])
+    {
+        inc=b[n-1]+profit(a,b,n-1,c-a[n-1]);
+    }
+    exc=profit(a,b,n-1,c);
+    return max(inc,exc);
+}
+    int32_t main()
+    {
+        std::ios::sync_with_stdio(false);
+       int n;
+       cin>>n;
+       int a[n],b[n];
+       for(int i=0;i<n;i++)
+       {
+           cin>>a[i]>>b[i];
+       }
+       int c;
+       cin>>c;
+       cout<<profit(a,b,n,c);
+        return 0;
+    }
