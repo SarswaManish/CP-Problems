@@ -1,0 +1,160 @@
+
+#include <bits/stdc++.h>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <cstring>
+#include <chrono>
+#include <complex>
+#define endl "\n"
+#define int long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vvi vector < vi >
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define mod 1e15
+#define inf 1000000000000000001;
+#define all(c) c.begin(),c.end()
+#define mp(x,y) make_pair(x,y)
+#define mem(a,val) memset(a,val,sizeof(a))
+#define eb emplace_back
+#define f first
+#define s second
+
+using namespace std;
+
+
+
+
+int dfs(int u, bool vis[], int count[], vector<pii>v[], int &ans, int n)
+{
+
+	vis[u] = true;
+	count[u] = 1;
+
+	for (int i = 0; i < v[u].size(); i++)
+	{
+		int node = v[u][i].f;
+		int nod = v[u][i].s;
+		if (!vis[node])
+		{
+
+			count[u] += dfs(node, vis, count, v, ans, n);
+			int  a = count[node];
+			int b = n - a;
+			ans += min(a, b) * 2 * nod;
+		}
+	}
+	return count[u];
+}
+
+
+int bfs(int src, int dest, vector<int>v[])
+{
+	int dist[105] = {0};
+
+	queue<int>q;
+	q.push(src);
+
+	while (!q.empty())
+	{
+
+
+		int node = q.front();
+		q.pop();
+
+		for (int i = 0; i < v[node].size(); i++)
+		{
+			if (dist[v[node][i]] == 0)
+			{
+				dist[v[node][i]] = dist[node] + 1;
+				q.push(v[node][i]);
+			}
+
+
+
+		}
+	}
+
+	return dist[dest];
+
+}
+void printMat(string mat[][15])
+{
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			cout << mat[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+int dx[] = { -1, 0, 0, 1};
+int dy[] = {0, 1, -1, 0};
+void flood_fill(string mat[][15], int i, int j, string ch, string color)
+{
+	if (i < 0 || j < 0 || j > 14 || i > 7)
+		return;
+
+	if (mat[i][j] != ch)
+		return;
+	mat[i][j] = color;
+
+	for (int k = 0; k < 4; k++)
+	{
+		flood_fill(mat, i + dx[k], j + dy[k], ch, color);
+	}
+
+	return;
+}
+
+int32_t main()
+{
+	std::ios::sync_with_stdio(false);
+#ifndef ONLINE_JUDGE
+	freopen("inputf.txt", "r", stdin);
+	freopen("outputf.txt", "w", stdout);
+#endif
+	int t;
+	cin >> t;
+
+	for (int k = 1; k <= t; k++)
+	{
+		string input[8][15];
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				cin >> input[i][j];
+			}
+
+		}
+
+		flood_fill(input, 0, 0, ".", "r");
+		printMat(input);
+
+
+	}
+	return 0;
+}
+
+//input
+/*1
+. . . . . . # # # # # # # # #
+# # # # # . # # # # # # . . .
+# . . . # . . . # # # # . # #
+# . . # # # # . . . . . . # #
+# # . . . . # . # # # # # # #
+# # # # # . . . # # # # # # #
+# # # # # # # # # # # # # # #
+*/
+//output
+/*r r r r r r # # # # # # # # #
+# # # # # r # # # # # # r r r
+# r r r # r r r # # # # r # #
+# r r # # # # r r r r r r # #
+# # r r r r # r # # # # # # #
+# # # # # r r r # # # # # # #
+# # # # # # # # # # # # # # # */
