@@ -1,0 +1,88 @@
+#include <bits/stdc++.h>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <cstring>
+#include <chrono>
+#include <complex>
+#define endl "\n"
+#define int long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vvi vector < vi >
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define mod 1e15
+#define inf 1000000000000000001;
+#define all(c) c.begin(),c.end()
+#define mp(x,y) make_pair(x,y)
+#define mem(a,val) memset(a,val,sizeof(a))
+#define eb emplace_back
+#define f first
+#define s second
+
+using namespace std;
+
+
+
+
+int dfs(int u, bool vis[], int count[], vector<pii>v[], int &ans, int n)
+{
+
+	vis[u] = true;
+	count[u] = 1;
+
+	for (int i = 0; i < v[u].size(); i++)
+	{
+		int node = v[u][i].f;
+		int nod = v[u][i].s;
+		if (!vis[node])
+		{
+
+			count[u] += dfs(node, vis, count, v, ans, n);
+			int  a = count[node];
+			int b = n - a;
+			ans += min(a, b) * 2 * nod;
+		}
+	}
+	return count[u];
+}
+
+
+int32_t main()
+{
+	std::ios::sync_with_stdio(false);
+#ifndef ONLINE_JUDGE
+	freopen("inputf.txt", "r", stdin);
+	freopen("outputf.txt", "w", stdout);
+#endif
+	int t;
+	cin >> t;
+	for (int k = 1; k <= t; k++)
+	{
+		int n, m;
+		cin >> n;
+		m = n - 1;
+		vector<pii>v[n + 1];
+		for (int i = 0; i < m; i++)
+		{
+			int x, y, cost;
+			cin >> x >> y >> cost;
+			v[x].push_back(mp(y, cost));
+			v[y].push_back(mp(x, cost));
+
+		}
+
+
+
+		bool vis[n + 1] = {false};
+		int count[n + 1] = {0};
+
+		int ans = 0;
+
+		dfs(1, vis, count, v, ans, n);
+		cout << "Case #" << k << ": ";
+		cout << ans << endl;
+	}
+	return 0;
+}
