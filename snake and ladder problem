@@ -1,0 +1,144 @@
+
+#include <bits/stdc++.h>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <cstring>
+#include <chrono>
+#include <complex>
+#define endl "\n"
+#define int long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vvi vector < vi >
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define mod 1e15
+#define inf 1000000000000000001;
+#define all(c) c.begin(),c.end()
+#define mp(x,y) make_pair(x,y)
+#define mem(a,val) memset(a,val,sizeof(a))
+#define eb emplace_back
+#define f first
+#define s second
+
+using namespace std;
+
+
+
+
+int dfs(int u, bool vis[], int count[], vector<pii>v[], int &ans, int n)
+{
+
+	vis[u] = true;
+	count[u] = 1;
+
+	for (int i = 0; i < v[u].size(); i++)
+	{
+		int node = v[u][i].f;
+		int nod = v[u][i].s;
+		if (!vis[node])
+		{
+
+			count[u] += dfs(node, vis, count, v, ans, n);
+			int  a = count[node];
+			int b = n - a;
+			ans += min(a, b) * 2 * nod;
+		}
+	}
+	return count[u];
+}
+
+
+int bfs(int src, int dest, vector<int>v[])
+{
+	int dist[105] = {0};
+
+	queue<int>q;
+	q.push(src);
+
+	while (!q.empty())
+	{
+
+
+		int node = q.front();
+		q.pop();
+
+		for (int i = 0; i < v[node].size(); i++)
+		{
+			if (dist[v[node][i]] == 0)
+			{
+				dist[v[node][i]] = dist[node] + 1;
+				q.push(v[node][i]);
+			}
+
+
+
+		}
+	}
+
+	return dist[dest];
+
+}
+
+int32_t main()
+{
+	std::ios::sync_with_stdio(false);
+#ifndef ONLINE_JUDGE
+	freopen("inputf.txt", "r", stdin);
+	freopen("outputf.txt", "w", stdout);
+#endif
+	int t;
+	cin >> t;
+
+	for (int k = 1; k <= t; k++)
+	{
+		vector<int>v[105];
+		int ladder;
+		cin >> ladder;
+		int board[105] = {0};
+		//vector<pair>v(ladder);
+		for (int i = 0; i < ladder; i++)
+		{
+			int x, y;
+			cin >> x >> y;
+			board[x] = y - x;
+
+		}
+
+		int snakes;
+		cin >> snakes;
+
+		for (int i = 0; i < snakes; i++)
+		{
+			int x, y;
+			cin >> x >> y;
+			board[x] = y - x;
+		}
+
+		// for (int i = 0; i < 101; i++)
+		// {
+		// 	cout << board[i] << " ";
+		// }
+		// cout << endl;
+
+		for (int i = 0; i < 101; i++)
+		{
+			for (int j = 1; j <= 6; j++)
+			{
+				int a = i + j;
+				a += board[a];
+				if (a <= 100)
+				{
+					v[i].push_back(a);
+				}
+
+			}
+		}
+
+		v[100].push_back(100);
+
+		cout << bfs(1, 100, v) << endl;
+	}
+	return 0;
+}
